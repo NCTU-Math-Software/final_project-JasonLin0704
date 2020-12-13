@@ -1,5 +1,14 @@
 # Project 6
-*Goal: click 2 points on the map of NCTU and find a smooth curve between them.*
+*Goal:*
++ *click 2 points on the map of NCTU and find a smooth curve between them.*\
+
+*File:*
++ *4 modified pictures*
+(If you want to see original pictures: http://www.ltc.tw/CN/event/map/mapNCTU.htm)
++ *project6.m*
++ *node.txt (additional)*
++ *write.py (additional)*
+
 ## 主要目標: (由低到高)
 1. 在圖上可行走之主要道路上任意點兩點，可找出一條路徑通過，且此路徑在可行走之主要道路上。
 2. 路徑上的節點不重複，且此路徑必須為最短路徑。
