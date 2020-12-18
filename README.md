@@ -1,9 +1,9 @@
 # Project 6
 ## 說明:
-+ *在交大地圖可行走的道路上點任一兩點，然後顯示兩點之最短路線。*\
++ 在交大地圖可行走的道路上點任一兩點，然後顯示兩點之最短路線。\
 ## 檔案:
 + *編輯過照片 \*4*
-*( 原圖網址: http://www.ltc.tw/CN/event/map/mapNCTU.htm )*
+*(原圖網址: http://www.ltc.tw/CN/event/map/mapNCTU.htm)*
 + *project6.m*
 + *node.txt (additional)*
 + *write.py (additional)*
