@@ -3,7 +3,7 @@
 ## 檔案:
 + *編輯過照片 \*4*
 *(原圖網址: http://www.ltc.tw/CN/event/map/mapNCTU.htm)*
-+ *project6.m*
++ ***project6.m***
 + *node.txt (additional)*
 + *write.py (additional)*
 ## 使用方法:
