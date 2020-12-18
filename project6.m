@@ -1,11 +1,24 @@
 % project 6
+% -------------------------------------------------------------------------
+% Goal: 
+% click 2 points on the map of NCTU where pedestrians can walk, and find a 
+% smooth path between them.
+% -------------------------------------------------------------------------
+% instruction: 
+% click 2 points by mouse, if you didn't click on the road where people can
+% walk, you have to reclick. After clicking two acceptable points, it will
+% show the shortest route on the screen.
+% -------------------------------------------------------------------------
 
 [I, cmap] = imread('NCTU01(v1).gif','frames','all');
 colormap(cmap);
 X = size(I,1);
 Y = size(I,2);
 
-set(gcf, 'position', [300, 50, 1000, 720]); % adjust the size of figure.
+% adjust the size of figure. (this's according to my labptop.)
+set(gcf, 'position', [300, 50, 1000, 720]); 
+
+% show the image
 image(I)
 
 
@@ -19,6 +32,7 @@ image(I)
 %     disp([gx, gy]);
 % end
 
+% record the location of every determined node.
 node_x = [294.8548, 297.5430, 295.3925, 219.0484, 296.4677,...
           295.9301, 297.0054, 297.5430, 236.2527, 171.1989,...
           351.8441, 349.6935, 350.7688, 357.2204, 354.5323,...
@@ -57,6 +71,8 @@ node_y = [165.6682, 201.5543, 247.5622, 308.2925, 306.4522,...
 hold on;      
 % plot(node_x, node_y, 'o')
 
+% set the adjacancy of each pair of nodes.
+% set by using notepad and python code.
 s = sparse(83, 83);
 s(1,2)=1; s(1,11)=1; s(2,1)=1; s(2,3)=1; s(2,12)=1; 
 s(3,2)=1; s(3,5)=1; s(3,13)=1; s(4,5)=1; s(5,3)=1;
@@ -107,16 +123,14 @@ s(80,32)=1; s(81,32)=1; s(81,33)=1; s(81,47)=1; s(81,48)=1;
 s(82,50)=1; s(82,62)=1; s(82,83)=1; s(83,51)=1; s(83,71)=1;
 s(83,82)=1;
 
+% transform to real distance relation
 for ii = 1:83
     for jj = 1:83
-        if s(ii, jj) == 1
+        if s(ii, jj) == 1 % if two nodes is adjacent, s is set to be their distance.
             dis2 = (round(node_x(jj))-round(node_x(ii)))^2 + ...
                    (round(node_y(jj))-round(node_y(ii)))^2;
             s(ii, jj) = sqrt(dis2);
-%             node1 = [node_x(ii), node_x(jj)];
-%             node2 = [node_y(ii), node_y(jj)];
-%             plot(node1, node2);
-        elseif s(ii, jj) == 0
+        elseif s(ii, jj) == 0 % otherwise, s is set to be 9999.
             s(ii, jj) = 9999;
         end
     end
@@ -124,40 +138,45 @@ end
 
 u = zeros(1,2);
 cnt = 0;
-while cnt < 2       % 兩個都找到就跳出
+
+while cnt < 2   % After getting 2 acceptable nodes, break the loop.
     [gx, gy, button] = ginput(1);
     if button == 3
         break;
     end
-    % 找出該座標最近的節點
+    
+    % find the nearest node to the ginput.
     min_dis = 1000000;
     for jj = 1:83
         dis2 = (node_x(jj)-gx)^2 + (node_y(jj)-gy)^2;
-%         disp([jj, sqrt(dis2)])
-        % 座標需滿足在一節點的半徑圓內 & 且距離是目前最小的
-        % 即是最接近的節點
+        
+        % The location of node should satisfy 2 conditions:
+        %     1.the ginput should in the ball of one of the nodes.
+        %     2.their distance is the nearest so far.
+        % Then it's the "nearest" node so far.
         if sqrt(dis2) <= 40 && sqrt(dis2) < min_dis 
-            min_dis = sqrt(dis2);     % 更新最小距離
-            nearest = jj;             % 更新目前最近節點
+            min_dis = sqrt(dis2);     % update the shortest distance
+            nearest = jj;             % update the nearest node number.
         end
     end
-    disp([min_dis, nearest]);
-    if min_dis ~= 1000000 && nearest ~= u(1)   % 代表至少有一節點是符合條件的
-                                               % 選過的點不再選
+    
+    % at least one acceptable node.
+    % and the second node is not the first node.       
+    if min_dis ~= 1000000 && nearest ~= u(1)  
         cnt = cnt + 1;
         plot(node_x(nearest), node_y(nearest), 'd', 'MarkerSize',8);
         u(cnt) = nearest;
     end
 end
-% -----------------------------------------------------------------------------
-A = u(1); % 起點
-B = u(2); % 終點                
-D = 10000 * ones(83, 1);    % 用來記錄目前「A到他點的最短距離」
-                            % 若有被選過成為「有最小距離的點」，則改成9999
-D(A) = 9999;                % A點也改成9999                            
-final_D = 10000 * ones(83, 1);    % 用來記錄「A到他點的最短距離」，為最終結果
-predecessor = A * ones(83, 1);    % 用來紀錄「前一節點」
-% -----------------------------------------------------------------------------
+% ------------------------------------------------------------------------------------------------------
+A = u(1); % starting point
+B = u(2); % ending point               
+D = 10000 * ones(83, 1);          % record the "currently" shortest distance from A to the other points.
+                                  % 若有被選過成為「有最小距離的點」，則改成9999
+D(A) = 9999;                      % set D(A) = 9999                            
+final_D = 10000 * ones(83, 1);    % record the "final" shortest distance from A to the other points.
+predecessor = A * ones(83, 1);    % record the predecessor node of each node.
+% ------------------------------------------------------------------------------------------------------
 for ii = 1:83
     if s(A, ii) ~= 9999
         D(ii) = s(A, ii);
@@ -171,31 +190,29 @@ D(closest_index) = 9999;
 
 while any(D-9999) %「若全部皆為9999，就跳出」
     
-    current = closest_index;
+    Current = closest_index;
 %     disp("--------");
 %     disp(['current = ', num2str(current)])
     for ii = 1:83
         
-        % 如果current的鄰居   % 但不要是A點及剛被選過的點
-        if s(current, ii) ~= 9999 && D(ii) ~= 9999 
-            
-            disp(['ii = ', num2str(ii)])
-            
+        % ii is the neighbor of Current && isn't "A" or "points already chosen". 
+        if s(Current, ii) ~= 9999 && D(ii) ~= 9999 
+
             % 更新"current的鄰居"的 D 還有 predecessor
 %             disp(['D(ii) = ', num2str(D(ii))])
-%             disp(['final_D(current) = ', num2str(final_D(current))]);
-%             disp(['s(current, ii) = ', num2str(s(current, ii))]);
-%             disp(['final_D(current) + s(current, ii) = ', num2str(final_D(current) + s(current, ii))])
-            [D(ii), choose] = min([D(ii), final_D(current) + s(current, ii)]);
+%             disp(['final_D(Current) = ', num2str(final_D(Current))]);
+%             disp(['s(Current, ii) = ', num2str(s(Current, ii))]);
+%             disp(['final_D(Current) + s(Current, ii) = ', num2str(final_D(Current) + s(Current, ii))])
+            [D(ii), choose] = min([D(ii), final_D(Current) + s(Current, ii)]);
 %             disp(['choose = ', num2str(choose)]);
             if choose == 2
-                predecessor(ii) = current;
+                predecessor(ii) = Current;
             end
 %             disp(['predecessor = ', num2str(predecessor(ii))]);
         end
     end
     [closest_distance, closest_index] = min(D);
-    final_D(closest_index) = closest_distance;  % 每次迴圈得到一個node的final_D
+    final_D(closest_index) = closest_distance;  % get one final_D in every loop.
     D(closest_index) = 9999;
 end
 
