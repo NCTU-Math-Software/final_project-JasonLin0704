@@ -1,14 +1,13 @@
 # Project 6
-*Goal:*
-+ *click 2 points on the map of NCTU where pedestrians can walk and find a smooth path between them.*\
-
-*File:*
-+ *4 modified pictures*
-(If you want to see original pictures: http://www.ltc.tw/CN/event/map/mapNCTU.htm)
+## 說明:
++ *在交大地圖可行走的道路上點任一兩點，然後顯示兩點之最短路線。*\
+## 檔案:
++ *編輯過照片 \*4*
+*( 原圖網址: http://www.ltc.tw/CN/event/map/mapNCTU.htm )*
 + *project6.m*
 + *node.txt (additional)*
 + *write.py (additional)*
-## 使用說明:
+## 使用方法:
 
 ## 主要目標: (由低到高)
 1. 在此圖上可行走之主要道路上任意點兩點，可找出一條路徑通過，且此路徑在可行走之主要道路上。
