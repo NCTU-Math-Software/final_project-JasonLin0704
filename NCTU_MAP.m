@@ -19,7 +19,7 @@ X = size(I,1);
 Y = size(I,2);
 linecolor = 1;
 
-% adjust the size of figure. (this's according to my labptop.)
+% adjust the size of figure. (this's according to my laptop.)
 % set(gcf, 'position', [300, 50, 1000, 720]); 
 
 % adjust the size of figure to full screen.
@@ -32,6 +32,7 @@ hold on;
  while true 
     % record the location of every determined node in advance.
     node_imformation = true;
+    % using code folding to fold
     if node_imformation
         node_x = [294.8548, 297.5430, 295.3925, 219.0484, 296.4677,...
                   295.9301, 297.0054, 297.5430, 236.2527, 171.1989,...
@@ -74,6 +75,7 @@ hold on;
     % set by using notepad and python code.
     s = sparse(83, 83);
     sparse_imformation = true;
+    % using code folding to fold
     if sparse_imformation
         s(1,2)=1; s(1,11)=1; s(2,1)=1; s(2,3)=1; s(2,12)=1; 
         s(3,2)=1; s(3,5)=1; s(3,13)=1; s(4,5)=1; s(5,3)=1;        
