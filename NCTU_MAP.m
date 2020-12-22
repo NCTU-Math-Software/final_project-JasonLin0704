@@ -20,7 +20,10 @@ Y = size(I,2);
 linecolor = 1;
 
 % adjust the size of figure. (this's according to my labptop.)
-set(gcf, 'position', [300, 50, 1000, 720]); 
+% set(gcf, 'position', [300, 50, 1000, 720]); 
+
+% adjust the size of figure to full screen.
+set(gcf, 'Position', get(0, 'Screensize'));
 
 % show the image
 image(I)
