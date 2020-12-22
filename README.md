@@ -8,7 +8,7 @@
 + *write.py (additional)*
 ## 開啟方法:
 + 請將整個資料夾下載後解壓縮，放到文件的matlab資料夾中，**用matlab開啟"NCTU_MAP.m"後執行檔案**即可。\ 
-  (雙擊點進NCTU_MAP.m後按Run(F5) / 在command line輸入"NCTU_MAP.m" )
+(雙擊點進NCTU_MAP.m後按Run(F5) / 在command line輸入"NCTU_MAP.m" )
 ## 關閉方法:
 + 執行後，程式就會進入"**等待使用者輸入**"狀態，若要離開，建議按**滑鼠右鍵離開狀態後，再按叉叉關閉**。
 ## 使用說明:
