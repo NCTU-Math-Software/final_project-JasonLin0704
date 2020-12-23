@@ -17,7 +17,7 @@
 colormap(cmap);
 X = size(I,1);
 Y = size(I,2);
-linecolor = 1;
+linecolor = 0;
 
 % adjust the size of figure. (this's according to my laptop.)
 % set(gcf, 'position', [300, 50, 1000, 720]); 
@@ -29,7 +29,8 @@ set(gcf, 'Position', get(0, 'Screensize'));
 image(I)
 hold on;
 
- while true 
+flag = true;
+while flag
     % record the location of every determined node in advance.
     node_imformation = true;
     % using code folding to fold
@@ -130,45 +131,54 @@ hold on;
     % transform to real distance relation
     for ii = 1:83
         for jj = 1:83
-            if s(ii, jj) == 1     % if two nodes is adjacent, s is set to be their distance.
-                dis2 = (round(node_x(jj))-round(node_x(ii)))^2 + ...
-                       (round(node_y(jj))-round(node_y(ii)))^2;
+            % if two nodes is adjacent, s is set to be their distance.
+            if s(ii, jj) == 1     
+                dis2 = (node_x(jj)-node_x(ii))^2 + (node_y(jj)-node_y(ii))^2;
                 s(ii, jj) = sqrt(dis2);
-            elseif s(ii, jj) == 0 % otherwise, s is set to be 9999.
+            % otherwise, s is set to be 9999.
+            else
                 s(ii, jj) = 9999;
             end
         end
     end
  
-    u = zeros(1,2);
+    u = ones(1,2);
     cnt = 0;
     while cnt < 2   % After getting 2 acceptable nodes, break the loop.
         [gx, gy, button] = ginput(1);
-        if button == 3
+        if button == 3   % quit the program 
+            flag = false; 
             break;
-        end
+        elseif button == 111 % button 'o', clean the plot. 
+            clf;
+            hold off;
+            [I, cmap] = imread('NCTU01(v1).gif','frames','all');
+            colormap(cmap);
+            image(I)
+            hold on;
+        else
+             % find the nearest node to the ginput.
+            min_dis = inf;
+            for jj = 1:83
+                dis2 = (node_x(jj)-gx)^2 + (node_y(jj)-gy)^2;
 
-        % find the nearest node to the ginput.
-        min_dis = 1000000;
-        for jj = 1:83
-            dis2 = (node_x(jj)-gx)^2 + (node_y(jj)-gy)^2;
-
-            % The location of node should satisfy 2 conditions:
-            %     1.the ginput should in the ball of one of the nodes.
-            %     2.their distance is the nearest so far.
-            % Then it's the "nearest" node so far.
-            if sqrt(dis2) <= 40 && sqrt(dis2) < min_dis 
-                min_dis = sqrt(dis2);     % update the shortest distance
-                nearest = jj;             % update the nearest node number.
+                % The location of node should satisfy 2 conditions:
+                %     1.the ginput should in the ball of one of the nodes.
+                %     2.their distance is the nearest so far.
+                % Then it's the "nearest" node so far.
+                if sqrt(dis2) <= 40 && sqrt(dis2) < min_dis 
+                    min_dis = sqrt(dis2);     % update the shortest distance
+                    nearest = jj;             % update the nearest node number.
+                end
             end
-        end
 
-        % at least one acceptable node.
-        % and the second node is not the first node.       
-        if min_dis ~= 1000000 && nearest ~= u(1)  
-            cnt = cnt + 1;
-            plot(node_x(nearest), node_y(nearest), 'd', 'MarkerSize',8);
-            u(cnt) = nearest;
+            % at least one acceptable node.
+            % and the second node is not the first node.       
+            if min_dis ~= inf && nearest ~= u(1) 
+                cnt = cnt + 1;
+                plot(node_x(nearest), node_y(nearest), 'd', 'MarkerSize',10);
+                u(cnt) = nearest;
+            end
         end
     end
     % ------------------------------------------------------------------------------------------------------
@@ -259,17 +269,13 @@ hold on;
     py = polyfit(1:n, pick_y, d); % find the "nearest" polynomial in y direction.
     fx = polyval(px, t);
     fy = polyval(py, t);
-    color = ['k', 'r', 'm', 'b', 'c', 'y', 'g', 'w'];
+    
+    color = ['k', 'r', 'm', 'b', 'c', 'y', 'g'];
+    linecolor = linecolor + 1;    % change color
+    if linecolor == 8
+        linecolor = 1;        
+    end
     choosecolor = ['-', color(linecolor)];
     plot(fx, fy, choosecolor, 'LineWidth', 2.5);  % plot the parameric curve.
-%     hold off;
     
-    [gx, gy, button] = ginput(1);
-    if button == 3     % quit the program
-        break;
-    elseif button == 1 % use again!
-        linecolor = rem(linecolor + 1, 8); % change color
-%         clf;
-        continue;
-    end
 end
