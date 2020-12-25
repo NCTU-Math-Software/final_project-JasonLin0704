@@ -33,7 +33,7 @@ flag = true;
 while flag
     % record the location of every determined node in advance.
     node_imformation = true;
-    % using code folding to fold
+    % using code folding to make it concise.
     if node_imformation
         node_x = [294.8548, 297.5430, 295.3925, 219.0484, 296.4677,...
                   295.9301, 297.0054, 297.5430, 236.2527, 171.1989,...
@@ -76,7 +76,7 @@ while flag
     % set by using notepad and python code.
     s = sparse(83, 83);
     sparse_imformation = true;
-    % using code folding to fold
+    % using code folding to make it concise.
     if sparse_imformation
         s(1,2)=1; s(1,11)=1; s(2,1)=1; s(2,3)=1; s(2,12)=1; 
         s(3,2)=1; s(3,5)=1; s(3,13)=1; s(4,5)=1; s(5,3)=1;        
@@ -187,7 +187,7 @@ while flag
     B = u(2); % ending point               
     D = 10000 * ones(83, 1);          % record the "currently" shortest distance from A to the other points.
     D(A) = 9999;                      % set D(A) = 9999   
-    final_D = 10000 * ones(83, 1);    % record the "final" shortest distance from A to the other points.
+    final_D = zeros(83, 1);    % record the "final" shortest distance from A to the other points.
     predecessor = A * ones(83, 1);    % record the predecessor node of each node.
     % ------------------------------------------------------------------------------------------------------
     for ii = 1:83
