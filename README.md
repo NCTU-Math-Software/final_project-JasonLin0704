@@ -42,13 +42,12 @@
 3. 讓使用者選擇起終點: 若某節點離該座標是「最靠近的」且「距離夠小」，則用該節點代表該座標，並用A, B記住節點編號。
 
 4. **dijkstra演算法:「給定一個source點，可以求出所有其他節點到source的最短距離及所找路線前一個節點。」**
-#### 寫法
-+ 假設source為A，節點數為n。 D(ii)表示A, ii目前最短距離，預設皆為10000，只有D(A)預設為9999。 final_D(ii)表示A, ii已確定最短距離，預設皆為0。 predecessor(ii)為ii目前最短路徑的前一個節點，預設皆為A。 
-+ 先找離A最近的node，當作current，同時可確定其最短距離，存到final_D(current)。
-+ 之後對current的所有鄰居做判斷，若final_D(current) + s(current, 鄰居) < D(鄰居)，則更新鄰居的最短距離及前一個節點，也就是D(鄰居)和predecessor(鄰居)。
-+ A到current的最短距離是確定的(不可能再更小了)，因此在迴圈最後，將D(current)存到final_D(current)，並將D(current)改成9999，表示他將不會再被更新。
-+ 之後的每次迴圈都找出一個D最小的current node，做同樣的判斷及更新，在所有D(ii)都=9999時，就代表找到A到其他n-1個節點的最短距離了，即可跳出迴圈。 (理論上，應該跑n-1次迴圈即可)
-***
+   + 假設source為A，節點數為n。 D(ii)表示A, ii目前最短距離，預設皆為10000，只有D(A)預設為9999。 final_D(ii)表示A, ii已確定最短距離，預設皆為0。 predecessor(ii)為ii目前最短路徑的前一個節點，預設皆為A。 
+   + 先找離A最近的node，當作current，同時可確定其最短距離，存到final_D(current)。
+   + 之後對current的所有鄰居做判斷，若final_D(current) + s(current, 鄰居) < D(鄰居)，則更新鄰居的最短距離及前一個節點，也就是D(鄰居)和predecessor(鄰居)。
+   + A到current的最短距離是確定的(不可能再更小了)，因此在迴圈最後，將D(current)存到final_D(current)，並將D(current)改成9999，表示他將不會再被更新。
+   + 之後的每次迴圈都找出一個D最小的current node，做同樣的判斷及更新，在所有D(ii)都=9999時，就代表找到A到其他n-1個節點的最短距離了，即可跳出迴圈。 (理論上，應該跑n-1次迴圈即可)
+   ***
 5. 要顯示A到B的最短路線，只需要從B開始依序查詢predecessor，直到是A，全部連線即可。
 
 6. polyfit的部分是在所找路徑上的所有節點間，插入更多的點，並用20次多項式去逼近。
